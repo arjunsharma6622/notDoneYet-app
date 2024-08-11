@@ -1,9 +1,11 @@
+import useFetch from '@/hooks/useFetch'
 import { formatDate } from '@/utils/FormatDate'
 import { router } from 'expo-router'
 import React from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 const ConversationCard = ({ conversation, otherUser, lastMessage, authenticatedUser }: any) => {
+    const { data: unreadCountData } = useFetch<any>(`/conversation/${conversation?._id}/unread`)
     return (
         <TouchableOpacity className='bg-white rounded-xl p-4' onPress={() => router.navigate('/messages/' + conversation?._id)}>
 
@@ -23,20 +25,32 @@ const ConversationCard = ({ conversation, otherUser, lastMessage, authenticatedU
                         }
                     </View>
 
-                    {lastMessage ?
-                        <Text
-                            className={`${true ? "text-black text-xs" : "text-gray-500"} truncatedText1`}
-                        >
-                            {lastMessage?.senderId === authenticatedUser._id
-                                ? "You: "
-                                : otherUser?.name?.split(" ")[0] + ": "}
-                            {lastMessage?.content}
-                        </Text>
+                    <View className='flex flex-row justify-between'>
 
-                        :
+                        {lastMessage ?
+                            <Text
+                                numberOfLines={1}
+                                className={`${(lastMessage?.senderId !== authenticatedUser?._id && !lastMessage.seen) ? "text-black font-medium" : "text-gray-500 text-xs"}`}
+                            >
+                                {(lastMessage?.senderId === authenticatedUser?._id)
+                                    ? "You: "
+                                    : otherUser?.name?.split(" ")[0] + ": "}
+                                {lastMessage?.content}
+                            </Text>
 
-                        <Text className="text-gray-500 text-xs">You followed {otherUser?.name?.split(" ")[0]}</Text>
-                    }
+                            :
+
+                            <Text className="text-gray-500 text-xs">Say hello </Text>
+                        }
+                        {unreadCountData?.count > 0 &&
+                            <View className='bg-red-500 rounded-full w-4 h-4 flex items-center justify-center'>
+                                <Text className='text-xs text-white'>{unreadCountData?.count}</Text>
+                            </View>
+                        }
+
+                    </View>
+
+
                 </View>
             </View>
         </TouchableOpacity>

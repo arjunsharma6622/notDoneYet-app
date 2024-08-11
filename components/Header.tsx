@@ -1,4 +1,5 @@
 import { useAuth } from '@/context/AuthContext'
+import useFetch from '@/hooks/useFetch'
 import { Link, router } from 'expo-router'
 import { ArrowLeft, LogOut, MessageSquareText, Search } from 'lucide-react-native'
 import React from 'react'
@@ -8,6 +9,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 const Header = ({ isInDashbaord = false, isInSubDashbaord = false }: { isInDashbaord?: boolean, isInSubDashbaord?: boolean }) => {
     const { authState, onLogout } = useAuth()
     const { user } = authState!
+
+    const { data: unreadCountData } = useFetch<any>('/conversation/unreadCount/user')
+
     return (
         <SafeAreaView className='bg-white w-full'>
             <View className='bg-white w-full py-2 px-4 flex justify-between flex-row items-center border-b border-gray-200 shadow'>
@@ -17,10 +21,10 @@ const Header = ({ isInDashbaord = false, isInSubDashbaord = false }: { isInDashb
                             <ArrowLeft className='text-gray-600' width={25} height={25} strokeWidth={1.5} />
                         </Pressable>
                     </Link>
-                    : isInSubDashbaord ? 
-                    <TouchableOpacity onPress={router.back}>
-                        <ArrowLeft className='text-gray-600' width={25} height={25} strokeWidth={1.5} />
-                    </TouchableOpacity>
+                    : isInSubDashbaord ?
+                        <TouchableOpacity onPress={router.back}>
+                            <ArrowLeft className='text-gray-600' width={25} height={25} strokeWidth={1.5} />
+                        </TouchableOpacity>
                         :
                         <Link href={'/dashboard'} >
                             <View className='w-10 h-10'>
@@ -35,7 +39,9 @@ const Header = ({ isInDashbaord = false, isInSubDashbaord = false }: { isInDashb
                 <View className='flex flex-row items-center gap-4'>
                     <TouchableOpacity activeOpacity={0.5} className='relative' onPress={() => router.navigate('/messages/')}>
                         <MessageSquareText className='text-gray-600' strokeWidth={1.5} />
-                        <Text className='absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full px-1'>2</Text>
+                        {unreadCountData?.unreadCount > 0 &&
+                            <Text className='absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full text-center w-4 h-4'>{unreadCountData?.unreadCount}</Text>
+                        }
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => onLogout!()}>
                         <LogOut className='text-gray-600' strokeWidth={1.5} />

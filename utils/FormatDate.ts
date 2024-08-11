@@ -8,7 +8,7 @@ export const formatDate = (date: any) => {
   } else if (isYesterday(messageDate)) {
     return "Yesterday";
   } else {
-    return format(messageDate, "MMMM dd, yyyy");
+    return format(messageDate, "MMM dd, yyyy");
   }
 };
 
@@ -20,7 +20,7 @@ export const formatConversationDate = (date: any) => {
   } else if (isYesterday(messageDate)) {
     return `Yesterday`;
   } else {
-    return format(messageDate, "MMMM dd, yyyy");
+    return format(messageDate, "MMM dd, yyyy");
   }
 };
 

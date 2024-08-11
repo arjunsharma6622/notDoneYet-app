@@ -9,7 +9,7 @@ const Message = ({
   return (
     <View
       key={message._id}
-      className={` flex ${currentUser ? 'items-end' : "items-start"}`}
+      className={` flex ${currentUser ? 'items-end' : "items-start"} `}
     >
       <View
         className={`${currentUser ? "" : "flex-row-reverse"
@@ -20,7 +20,7 @@ const Message = ({
             }`}
         >
           <View
-            className={`max-w-xl rounded-xl flex relative text-sm items-center ${currentUser ? 'rounded-br-none bg-gray-100' : 'rounded-bl-none bg-red-100'
+            className={`border max-w-xl rounded-xl flex relative text-sm items-center ${currentUser ? 'rounded-br-none bg-white border-gray-300' : 'rounded-bl-none bg-blue-100 border-blue-300'
               } py-2 px-4 `}
           >
             <View>

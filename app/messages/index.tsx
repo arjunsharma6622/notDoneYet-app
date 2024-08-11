@@ -1,16 +1,17 @@
 import { useAuth } from '@/context/AuthContext'
-import { formatDate } from '@/utils/FormatDate'
 import axios from 'axios'
-import { router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { RefreshControl, RefreshControlBase, ScrollView, Text, View } from 'react-native'
 import ConversationCard from './(components)/ConversationCard'
+import { Link } from 'expo-router'
+import Header from '@/components/Header'
 
 const Messages = () => {
     const { authState } = useAuth();
     const { user: authenticatedUser } = authState || {};
 
     const [conversations, setConversations] = useState([])
+    const [refreshing, setRefreshing] = useState(false);
 
     const fetchConversations = async () => {
         try {
@@ -25,13 +26,22 @@ const Messages = () => {
     }
 
     useEffect(() => {
+        setRefreshing(true)
         fetchConversations()
+        setRefreshing(false)
     }, [])
 
     return (
-        <View className='p-4'>
-            <Text>messages</Text>
-            <View className='flex flex-col space-y-2'>
+        <View className=''>
+                        <Header isInSubDashbaord={false} />
+
+            <Text className='text-center mt-2 text-base font-semibold'>Messages</Text>
+            <ScrollView 
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={fetchConversations}/>
+                } 
+                className='flex flex-col space-y-2 p-2'
+            >
                 {conversations.map((conversation: any, i: number) => {
 
                     const lastMessage = conversation?.messages[conversation.messages.length - 1];
@@ -51,7 +61,7 @@ const Messages = () => {
                     )
                 }
                 )}
-            </View>
+            </ScrollView>
         </View>
     )
 }
