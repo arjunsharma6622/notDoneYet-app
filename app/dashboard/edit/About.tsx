@@ -1,10 +1,10 @@
 import CustomButton from '@/components/CustomButton'
 import FormInput from '@/components/FormInput'
-import Header from '@/components/Header'
+import FormButton from '@/components/ui/FormButton'
 import { useLocalSearchParams } from 'expo-router'
-import React from 'react'
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Alert, ScrollView, Text, TextInput, View } from 'react-native'
+import { Alert, ScrollView, Text, View } from 'react-native'
 
 const About = () => {
     const { userData: unparsedUserData }: any = useLocalSearchParams()
@@ -14,6 +14,8 @@ const About = () => {
             about : userData?.about
         }
     })
+
+    const [isSaving, setIsSaving] = useState(false)
 
     const onSubmit = (data: any) => {
         Alert.alert(JSON.stringify(data))
@@ -58,11 +60,13 @@ const About = () => {
                 </View>
             </ScrollView>
             <View className='px-4 py-2 border-t border-gray-200 bg-white'>
-            <CustomButton
-                title='Save'
-                handlePress={handleSubmit(onSubmit)}
-                containerStyles='bg-primary p-2 py-3 rounded-full'
-            />
+                <FormButton
+                    title='Save'
+                    isLoading={isSaving}
+                    isLoadingMessage='Saving...'
+                    handlePress={handleSubmit(onSubmit)}
+                    containerStyles='bg-primary p-2 py-3 rounded-full'
+                />
             </View>
         </View>
     )

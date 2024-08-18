@@ -1,8 +1,8 @@
-import CustomButton from '@/components/CustomButton';
 import FormInput from '@/components/FormInput';
+import FormButton from '@/components/ui/FormButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocalSearchParams } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, ScrollView, Text, View } from 'react-native';
 import { z } from "zod";
@@ -38,6 +38,7 @@ const ExperienceSchema = z.object({
 const Experience = () => {
   const { userData: unparsedUserData }: any = useLocalSearchParams();
   const userData = JSON.parse(unparsedUserData);
+  const [isSaving, setIsSaving] = useState(false);
 
   const { control, handleSubmit } = useForm({
     defaultValues: userData.experience[0], // Assuming userData contains the experience array
@@ -96,8 +97,10 @@ const Experience = () => {
         </View>
       </ScrollView>
       <View className='px-4 py-2 border-t border-gray-200 bg-white'>
-        <CustomButton
+        <FormButton
           title='Save'
+          isLoading={isSaving}
+          isLoadingMessage='Saving...'
           handlePress={handleSubmit(onSubmit)}
           containerStyles='bg-primary p-2 py-3 rounded-full'
         />

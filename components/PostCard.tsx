@@ -1,19 +1,26 @@
 import { timeAgo } from '@/utils/utils'
 import { Link } from 'expo-router'
-import { CloudHail, Dot, EllipsisVertical, Heart, MessageCircle, Share } from 'lucide-react-native'
-import React from 'react'
-import { Image, Pressable, Text, TouchableOpacity, View } from 'react-native'
+import { Dot, EllipsisVertical, Heart, MessageCircle, Share } from 'lucide-react-native'
+import React, { useState } from 'react'
+import { FlatList, Image, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import UserCommentCard from './UserCommentCard'
+import PostComment from './PostComment'
 
 const PostCard = ({ post }: any) => {
+    const [showComments, setShowComments] = useState(false)
+
+
+
+
     return (
         <View className='my-1 space-y-3 border rounded-lg p-2 border-gray-200 bg-white'>
             <View className='flex flex-row items-center border-b pb-2 border-gray-200'>
                 <Link href={`/UserProfile/${post?.user?.userName}`} asChild>
-                <Pressable>
-                    <Image className='w-10 h-10 rounded-full' style={{ resizeMode: 'cover' }} source={{ uri: post?.user?.image }} />
+                    <Pressable>
+                        <Image className='w-10 h-10 rounded-full' style={{ resizeMode: 'cover' }} source={{ uri: post?.user?.image }} />
                     </Pressable>
                 </Link>
-                    <View className='flex-1 ml-2 w-fit'>
+                <View className='flex-1 ml-2 w-fit'>
                     <Link href={`/UserProfile/${post?.user?.userName}`}>
 
                         <View className='flex items-center flex-row'>
@@ -25,17 +32,14 @@ const PostCard = ({ post }: any) => {
                                 {timeAgo(post?.createdAt)}
                             </Text>
                         </View>
-                        </Link>
+                    </Link>
 
-                        <Text className='text-gray-500 text-xs' numberOfLines={1}>
-                            {post?.user?.bio}
-                        </Text>
-
-
-                    </View>
+                    <Text className='text-gray-500 text-xs' numberOfLines={1}>
+                        {post?.user?.bio}
+                    </Text>
 
 
-
+                </View>
 
                 <EllipsisVertical key={post?._id} strokeWidth={1.5} className='ml-2 w-4 h-4 text-gray-500' />
 
@@ -50,7 +54,7 @@ const PostCard = ({ post }: any) => {
                     <Text className='text-pink-600 text-xs'>Like</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity className='flex flex-[1] w-full justify-center flex-row items-center'>
+                <TouchableOpacity onPress={() => setShowComments(!showComments)} className='flex flex-[1] w-full justify-center flex-row items-center'>
                     <MessageCircle width={22} height={22} strokeWidth={1.5} className='text-gray-500' />
                     <Text className='text-gray-500 text-xs'>Comment</Text>
                 </TouchableOpacity>
@@ -61,6 +65,10 @@ const PostCard = ({ post }: any) => {
                 </TouchableOpacity>
             </View>
 
+
+            {showComments &&
+                <PostComment post={post} />
+            }
         </View>
     )
 }

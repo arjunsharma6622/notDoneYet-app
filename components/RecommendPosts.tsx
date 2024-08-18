@@ -13,7 +13,7 @@ const RecommendPosts = () => {
         const fetchPosts = async () => {
             try {
                 const response = await axios.get(`/posts/user/recommendedPosts`)
-                setPosts(response.data)
+                setPosts(response.data.data)
             }
             catch (error) {
                 console.error('Error fetching posts:', error)

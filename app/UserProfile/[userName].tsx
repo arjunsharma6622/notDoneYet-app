@@ -22,7 +22,7 @@ const UserProfile = () => {
         const response = await axios.get(`/user/getUser?userName=${userName}`)
         const response2 = await axios.get(`/posts/getPosts/user?userName=${userName}`)
         setUserData(response.data)
-        setUserPosts(response2.data)
+        setUserPosts(response2.data.data)
       }
       catch (error) {
         console.error('Error fetching user data:', error)

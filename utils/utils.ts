@@ -1,4 +1,4 @@
-export const API_HEAD = process.env.NODE_ENV === "development" ? "http://192.168.29.46:8000" : "https://api.notdoneyet.in"
+export const API_HEAD = process.env.NODE_ENV === "development" ? "http://192.168.0.109:8000" : "https://api.notdoneyet.in"
 
 
 export const userData = {

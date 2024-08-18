@@ -36,7 +36,7 @@ const useFetch = <T>(url: string, dependencies: any[] = []) => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [url]);
 
   useEffect(() => {
     fetchData();

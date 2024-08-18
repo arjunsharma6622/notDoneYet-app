@@ -1,14 +1,16 @@
 import CustomButton from '@/components/CustomButton'
 import FormInput from '@/components/FormInput'
 import IconButton from '@/components/IconButton'
+import FormButton from '@/components/ui/FormButton'
 import { useLocalSearchParams } from 'expo-router'
-import { Trash2 } from 'lucide-react-native'
 import React, { useState } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 
 const Skills = () => {
     const { userData: unparsedUserData }: any = useLocalSearchParams()
     const userData = JSON.parse(unparsedUserData);
+
+    const [isSaving, setIsSaving] = useState(false)
 
     const [skills, setSkills] = useState(userData?.skills)
 
@@ -38,20 +40,20 @@ const Skills = () => {
                         <Text className='text-lg font-semibold underline'>Add Skill</Text>
                         <View className='flex flex-row items-center space-x-2 w-full'>
                             <View className='w-full flex-[3]'>
-                        <FormInput
-                            placeholder={'Enter skill'}
-                            value={newSkill}
-                            onChangeText={(value: any) => setNewSkill(value)}
-                        />
-                        </View>
-                        <View className='flex-[1]'>
-                        <CustomButton
-                            title='Add'
-                            handlePress={handleAddSkill}
-                            containerStyles='bg-primary p-2 py-3 h-12 rounded-xl w-24'
-                            disabledButton={!newSkill}
-                        />
-                        </View>
+                                <FormInput
+                                    placeholder={'Enter skill'}
+                                    value={newSkill}
+                                    onChangeText={(value: any) => setNewSkill(value)}
+                                />
+                            </View>
+                            <View className='flex-[1]'>
+                                <CustomButton
+                                    title='Add'
+                                    handlePress={handleAddSkill}
+                                    containerStyles='bg-primary p-2 py-3 h-12 rounded-xl w-24'
+                                    disabledButton={!newSkill}
+                                />
+                            </View>
                         </View>
                     </View>
                     <View className='bg-white p-4 rounded-xl space-y-2'>
@@ -61,7 +63,7 @@ const Skills = () => {
                                 skills.map((skill: string, index: number) => (
                                     <View key={index} className='flex flex-row items-center space-x-2 justify-between bg-gray-100 py-3 px-4 rounded-xl'>
                                         <Text className='text-black'>{skill}</Text>
-                                        <IconButton buttonType='delete' onPress={() => handleRemoveSkill(skill)}/>
+                                        <IconButton buttonType='delete' onPress={() => handleRemoveSkill(skill)} />
                                     </View>
                                 ))
                             }
@@ -71,9 +73,11 @@ const Skills = () => {
                 </View>
             </ScrollView>
             <View className='px-4 py-2 border-t border-gray-200 bg-white'>
-                <CustomButton
+                <FormButton
                     title='Save'
-                    handlePress={handleSubmit}
+                    isLoading={isSaving}
+                    isLoadingMessage='Saving...'
+                    handlePress={() => { }}
                     containerStyles='bg-primary p-2 py-3 rounded-full'
                 />
             </View>

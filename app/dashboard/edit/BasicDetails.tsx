@@ -1,24 +1,24 @@
-import CustomButton from '@/components/CustomButton'
 import FormInput from '@/components/FormInput'
+import FormButton from '@/components/ui/FormButton'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useLocalSearchParams } from 'expo-router'
-import React from 'react'
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Alert, ScrollView, Text, View } from 'react-native'
 import { z } from "zod"
-import { zodResolver } from '@hookform/resolvers/zod';
 
 const BasicDetailsSchema = z.object({
-    name : z.string(),
-    bio : z.string(),
-    userName : z.string(),
-    email : z.string(),
-    phone : z.string(),
-    address : z.object({
-        street : z.string(),
-        city : z.string(),
-        state : z.string(),
-        country : z.string(),
-        postalCode : z.string()
+    name: z.string(),
+    bio: z.string(),
+    userName: z.string(),
+    email: z.string(),
+    phone: z.string(),
+    address: z.object({
+        street: z.string(),
+        city: z.string(),
+        state: z.string(),
+        country: z.string(),
+        postalCode: z.string()
     })
 })
 
@@ -44,6 +44,8 @@ const BasicDetails = () => {
         },
         resolver: zodResolver(BasicDetailsSchema)
     })
+
+    const [isSaving, setIsSaving] = useState(false)
 
     const onSubmit = (data: any) => {
         Alert.alert(JSON.stringify(data))
@@ -118,11 +120,13 @@ const BasicDetails = () => {
                 </View>
             </ScrollView>
             <View className='px-4 py-2 border-t border-gray-200 bg-white'>
-            <CustomButton
-                title='Save'
-                handlePress={handleSubmit(onSubmit)}
-                containerStyles='bg-primary p-2 py-3 rounded-full'
-            />
+                <FormButton
+                    title='Save'
+                    isLoading={isSaving}
+                    isLoadingMessage='Saving...'
+                    handlePress={handleSubmit(onSubmit)}
+                    containerStyles='bg-primary p-2 py-3 rounded-full'
+                />
             </View>
         </View>
     )
