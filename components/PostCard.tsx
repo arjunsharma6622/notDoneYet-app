@@ -1,16 +1,13 @@
 import { timeAgo } from '@/utils/utils'
 import { Link } from 'expo-router'
-import { Dot, EllipsisVertical, Heart, MessageCircle, Share } from 'lucide-react-native'
+import { Dot, EllipsisVertical, MessageCircle, Share } from 'lucide-react-native'
 import React, { useState } from 'react'
-import { FlatList, Image, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import UserCommentCard from './UserCommentCard'
+import { Image, Pressable, Text, TouchableOpacity, View } from 'react-native'
 import PostComment from './PostComment'
+import PostLikeButton from './PostLikeButton'
 
 const PostCard = ({ post }: any) => {
     const [showComments, setShowComments] = useState(false)
-
-
-
 
     return (
         <View className='my-1 space-y-3 border rounded-lg p-2 border-gray-200 bg-white'>
@@ -49,10 +46,7 @@ const PostCard = ({ post }: any) => {
             <Image className='rounded-xl w-full aspect-[2/1] object-cover' style={{ resizeMode: 'cover' }} source={{ uri: post?.images[0] }} />
 
             <View className='flex flex-row justify-between items-center'>
-                <TouchableOpacity className='flex flex-[1] w-full justify-start flex-row items-center gap-1'>
-                    <Heart width={22} height={22} strokeWidth={1.5} className='text-pink-500' />
-                    <Text className='text-pink-600 text-xs'>Like</Text>
-                </TouchableOpacity>
+                    <PostLikeButton post={post}/>
 
                 <TouchableOpacity onPress={() => setShowComments(!showComments)} className='flex flex-[1] w-full justify-center flex-row items-center'>
                     <MessageCircle width={22} height={22} strokeWidth={1.5} className='text-gray-500' />

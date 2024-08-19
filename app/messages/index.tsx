@@ -1,34 +1,33 @@
+import Header from '@/components/Header'
 import { useAuth } from '@/context/AuthContext'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { RefreshControl, RefreshControlBase, ScrollView, Text, View } from 'react-native'
+import { RefreshControl, ScrollView, Text, View } from 'react-native'
 import ConversationCard from './(components)/ConversationCard'
-import { Link } from 'expo-router'
-import Header from '@/components/Header'
 
 const Messages = () => {
     const { authState } = useAuth();
     const { user: authenticatedUser } = authState || {};
 
     const [conversations, setConversations] = useState([])
-    const [refreshing, setRefreshing] = useState(false);
+    const [isFetching, setIsFetching] = useState(false);
 
     const fetchConversations = async () => {
         try {
+            setIsFetching(true)
             const response = await axios.get('/conversation/user/getAllConversations')
             setConversations(response.data.data)
-
         }
         catch (error) {
-
             console.log(error)
+        }
+        finally{
+            setIsFetching(false)
         }
     }
 
     useEffect(() => {
-        setRefreshing(true)
         fetchConversations()
-        setRefreshing(false)
     }, [])
 
     return (
@@ -38,7 +37,7 @@ const Messages = () => {
             <Text className='text-center mt-2 text-base font-semibold'>Messages</Text>
             <ScrollView 
                 refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={fetchConversations}/>
+                    <RefreshControl refreshing={isFetching} onRefresh={fetchConversations}/>
                 } 
                 className='flex flex-col space-y-2 p-2'
             >
