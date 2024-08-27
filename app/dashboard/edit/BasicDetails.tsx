@@ -1,10 +1,12 @@
 import FormInput from '@/components/FormInput'
 import FormButton from '@/components/ui/FormButton'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useLocalSearchParams } from 'expo-router'
+import axios from 'axios'
+import { router, useLocalSearchParams } from 'expo-router'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Alert, ScrollView, Text, View } from 'react-native'
+import Toast from 'react-native-toast-message'
 import { z } from "zod"
 
 const BasicDetailsSchema = z.object({
@@ -26,6 +28,7 @@ const BasicDetails = () => {
 
     const { userData: unparsedUserData }: any = useLocalSearchParams()
     const userData = JSON.parse(unparsedUserData);
+    
     const { control, handleSubmit } = useForm({
         defaultValues: {
             name: userData?.name,
@@ -47,8 +50,45 @@ const BasicDetails = () => {
 
     const [isSaving, setIsSaving] = useState(false)
 
-    const onSubmit = (data: any) => {
-        Alert.alert(JSON.stringify(data))
+    const onSubmit = async (data: any) => {
+        try {
+            setIsSaving(true)
+            const payloadToSend = {
+                name: data.name,
+                userName: data.userName,
+                email: data.email,
+                password: data.password,
+                phone: data.phone,
+                bio: data.bio,
+                address: {
+                    street: data.address.street,
+                    city: data.address.city,
+                    state: data.address.state,
+                    country: data.address.country,
+                    postalCode: data.address.postalCode
+                }
+            }
+
+            const response = await axios.patch(`/user/`, payloadToSend)
+
+            if (response.status === 200) {
+                Toast.show({
+                    type: "success",
+                    text1: response.data.message
+                })
+                router.back()
+            }
+        }
+        catch (error : any) {
+            Toast.show({
+                type: "error",
+                text1: error.response.data.message
+            })
+            console.log(error)
+        }
+        finally {
+            setIsSaving(false)
+        }
     }
 
     const basicFormFields = [

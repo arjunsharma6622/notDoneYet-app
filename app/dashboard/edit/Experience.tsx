@@ -4,8 +4,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { z } from "zod";
+
 const ExperienceSchema = z.object({
   title: z.string(),
   type: z.string(),
@@ -26,9 +28,9 @@ const ExperienceSchema = z.object({
   organization: z.string().optional(),
   coach: z.string().optional(),
   sport: z.string().optional(),
-  date: z.date().optional(),
-  startDate: z.date().optional(),
-  endDate: z.date().optional(),
+  // date: z.date().optional(),
+  // startDate: z.date().optional(),
+  // endDate: z.date().optional(),
   current: z.boolean().optional(),
   specialization: z.string().optional(),
 });
@@ -45,9 +47,38 @@ const Experience = () => {
     resolver: zodResolver(ExperienceSchema),
   });
 
-  const onSubmit = (data: any) => {
-    Alert.alert(JSON.stringify(data));
-  };
+  const onSubmit =  (data : any) => {
+    console.log('xx', data)
+    try {
+      console.log('xx')
+        // setIsSaving(true)
+        // const payloadToSend = {
+
+        // }
+
+        // const response = await axios.patch(`/user/`, payloadToSend)
+
+        // if (response.status === 200) {
+        //     Toast.show({
+        //         type: "success",
+        //         text1: response.data.message
+        //     })
+        //     router.back()
+        // }
+
+        // console.log(data)
+    }
+    catch (error : any) {
+        Toast.show({
+            type: "error",
+            text1: error.response.data.message
+        })
+        console.log(error)
+    }
+    finally {
+        setIsSaving(false)
+    }
+}
 
   const experienceFormFields = [
     { name: "title", title: "Title" },
@@ -62,9 +93,9 @@ const Experience = () => {
     { name: "sport", title: "Sport" },
     { name: "specialization", title: "Specialization" },
     { name: "outcome", title: "Outcome" },
-    { name: "date", title: "Date" },
-    { name: "startDate", title: "Start Date" },
-    { name: "endDate", title: "End Date" },
+    // { name: "date", title: "Date" },
+    // { name: "startDate", title: "Start Date" },
+    // { name: "endDate", title: "End Date" },
     { name: "current", title: "Current" },
   ];
 

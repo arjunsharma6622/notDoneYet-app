@@ -14,7 +14,7 @@ export default function Index() {
       ) : (
         <View>
           {(accessToken && authenticated && user) ? (
-            <Redirect href="/network" />
+            <Redirect href="/home"/>
           ) : (
             <Redirect href="/signin" />
           )}

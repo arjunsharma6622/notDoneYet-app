@@ -40,19 +40,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     const loadToken = async () => {
-      const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
-      const refreshToken = await SecureStore.getItemAsync(REFRESH_TOKEN);
-      const userString = await SecureStore.getItemAsync('user');
 
-      // console.log(`ACCESS - ${accessToken}, REFRESH - ${refreshToken}, USER - ${userString}`);
 
-      if (accessToken && refreshToken && userString) {
-        const user = JSON.parse(userString);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        axios.defaults.baseURL = API_HEAD;
-        setAuthState({ accessToken, refreshToken, authenticated: true, user });
+      try {
+        const accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN);
+        const refreshToken = await SecureStore.getItemAsync(REFRESH_TOKEN);
+        const userString = await SecureStore.getItemAsync('user');
+
+        if (accessToken && refreshToken && userString) {
+          const user = JSON.parse(userString);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+          axios.defaults.baseURL = API_HEAD;
+          setAuthState({ accessToken, refreshToken, authenticated: true, user });
+        }
+        setIsLoading(false);
       }
-      setIsLoading(false);
+      catch (err) {
+        console.log(err)
+        setIsLoading(false);
+      }
     };
     loadToken();
   }, []);
@@ -62,7 +68,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const response = await axios.post(`${API_HEAD}/auth/login`, { email, password });
       const { user, accessToken, refreshToken } = response?.data?.data;
-      setAuthState({ accessToken, refreshToken , authenticated: true, user });
+      setAuthState({ accessToken, refreshToken, authenticated: true, user });
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       await SecureStore.setItemAsync(ACCESS_TOKEN, accessToken);
       await SecureStore.setItemAsync(REFRESH_TOKEN, refreshToken);

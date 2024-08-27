@@ -1,10 +1,12 @@
 import CustomButton from '@/components/CustomButton'
 import FormInput from '@/components/FormInput'
 import FormButton from '@/components/ui/FormButton'
-import { useLocalSearchParams } from 'expo-router'
+import axios from 'axios'
+import { router, useLocalSearchParams } from 'expo-router'
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Alert, ScrollView, Text, View } from 'react-native'
+import Toast from 'react-native-toast-message'
 
 const About = () => {
     const { userData: unparsedUserData }: any = useLocalSearchParams()
@@ -17,8 +19,33 @@ const About = () => {
 
     const [isSaving, setIsSaving] = useState(false)
 
-    const onSubmit = (data: any) => {
-        Alert.alert(JSON.stringify(data))
+    const onSubmit = async (data: any) => {
+        try {
+            setIsSaving(true)
+            const payloadToSend = {
+                about: data.about
+            }
+
+            const response = await axios.patch(`/user/`, payloadToSend)
+
+            if (response.status === 200) {
+                Toast.show({
+                    type: "success",
+                    text1: response.data.message
+                })
+                router.back()
+            }
+        }
+        catch (error : any) {
+            Toast.show({
+                type: "error",
+                text1: error.response.data.message
+            })
+            console.log(error)
+        }
+        finally {
+            setIsSaving(false)
+        }
     }
 
     const aboutFormFields = [

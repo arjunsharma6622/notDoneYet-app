@@ -38,6 +38,7 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="profile" options={{ headerShown: false }} />
           <Stack.Screen name="UserProfile/[userName]" options={{ headerShown: false }} />
+          <Stack.Screen name="VenueProfile/[venueId]" options={{ headerShown: false }} />
         </Stack>
         </AuthProvider>
       <Toast />

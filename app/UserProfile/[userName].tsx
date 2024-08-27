@@ -1,15 +1,13 @@
+import Header from '@/components/Header'
 import axios from 'axios'
 import { useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { ScrollView, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import About from './(components)/About'
-import Sports from './(components)/Athlete/Sports'
 import BasicDetails from './(components)/BasicDetails'
-import Skills from './(components)/Doctor/Skills'
 import Posts from './(components)/Posts'
 import ProfileHeader from './(components)/ProfileHeader'
-import Header from '@/components/Header'
+import Skills from './(components)/Skills'
 
 const UserProfile = () => {
   const { userName } = useLocalSearchParams()
@@ -34,13 +32,13 @@ const UserProfile = () => {
   return (
     <View className='bg-white h-full'>
       <Header />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       {userData && (
-        <View className='flex flex-col'>
+        <View className='flex flex-col p-2 px-1'>
           <ProfileHeader userData={userData} />
           <BasicDetails userData={userData} />
           <About userData={userData} />
-          {userData?.role === "athlete" && <Sports userData={userData} />}
+          {userData?.role === "athlete" && <Skills userData={userData} />}
           {userData?.role === "doctor" && <Skills userData={userData} />}
           <Posts userPosts={userPosts} />
         </View>

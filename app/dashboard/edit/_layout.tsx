@@ -7,35 +7,40 @@ import { StatusBar } from 'expo-status-bar'
 const DashboardEditLayout = () => {
   return (
     <>
-      <Header isInSubDashbaord={true}/>
+      <Header isInSubDashbaord={true} />
       <Stack>
-        <Stack.Screen 
+        <Stack.Screen
           name='BasicDetails'
           options={{
-            headerShown : false
+            headerShown: false
           }}
         />
-        <Stack.Screen 
+        <Stack.Screen
           name='About'
           options={{
-            headerShown : false
+            headerShown: false
           }}
         />
-        <Stack.Screen 
+        <Stack.Screen
           name='Skills'
           options={{
-            headerShown : false
+            headerShown: false
           }}
         />
-        <Stack.Screen 
+        <Stack.Screen
           name='Experience'
           options={{
-            headerShown : false
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name='ChooseRole'
+          options={{
+            headerShown: false
           }}
         />
       </Stack>
-            <StatusBar backgroundColor="" style='light' />
-
+      <StatusBar backgroundColor="" style='light' />
     </>
   )
 }

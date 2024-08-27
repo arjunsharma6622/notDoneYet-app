@@ -2,9 +2,11 @@ import CustomButton from '@/components/CustomButton'
 import FormInput from '@/components/FormInput'
 import IconButton from '@/components/IconButton'
 import FormButton from '@/components/ui/FormButton'
-import { useLocalSearchParams } from 'expo-router'
+import axios from 'axios'
+import { router, useLocalSearchParams } from 'expo-router'
 import React, { useState } from 'react'
 import { ScrollView, Text, View } from 'react-native'
+import Toast from 'react-native-toast-message'
 
 const Skills = () => {
     const { userData: unparsedUserData }: any = useLocalSearchParams()
@@ -22,8 +24,29 @@ const Skills = () => {
         setNewSkill('')
     }
 
-    const handleSubmit = (data: any) => {
-        console.log(data)
+    const handleSubmit = async () => {
+        try {
+            setIsSaving(true)
+            const payloadToSend = { skills }
+            const response = await axios.patch(`/user/`, payloadToSend)
+            if (response.status === 200) {
+                Toast.show({
+                    type: "success",
+                    text1: response.data.message
+                })
+                router.back()
+            }
+        }
+        catch (error: any) {
+            Toast.show({
+                type: "error",
+                text1: error.response.data.message
+            })
+            console.log(error)
+        }
+        finally {
+            setIsSaving(false)
+        }
     }
 
     const handleRemoveSkill = (skill: any) => {
@@ -77,7 +100,7 @@ const Skills = () => {
                     title='Save'
                     isLoading={isSaving}
                     isLoadingMessage='Saving...'
-                    handlePress={() => { }}
+                    handlePress={handleSubmit}
                     containerStyles='bg-primary p-2 py-3 rounded-full'
                 />
             </View>

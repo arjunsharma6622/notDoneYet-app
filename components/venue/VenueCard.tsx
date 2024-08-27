@@ -8,7 +8,7 @@ const VenueCard = ({ venue }: { venue: any }) => {
     const venueAddress = `${venue?.location?.address || ""}, ${venue?.location?.landmark || ""}, ${venue?.location?.city || ""}, ${venue?.location?.state || ""}, ${venue?.location?.country || ""}, ${venue?.location?.zipCode || ""}`
 
     return (
-        <Link href={`/venueProfile/${venue?._id}`} asChild className='w-full'>
+        <Link href={`/VenueProfile/${venue?._id}`} asChild className='w-full'>
             <Pressable className='w-full'>
                 <View className='rounded-xl my-1 border relative mx-auto bg-white border-gray-200 max-w-[80%] w-full flex flex-col justify-center items-center pb-2'>
                     <Image source={{ uri: venue?.images[0] }} className='w-full aspect-[2/1] rounded-t-xl' />

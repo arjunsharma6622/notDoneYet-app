@@ -45,17 +45,12 @@ const PostCard = ({ post }: any) => {
             {/* <TextMoreLess text={post?.description} linesToTruncate={3}/> */}
             <Image className='rounded-xl w-full aspect-[2/1] object-cover' style={{ resizeMode: 'cover' }} source={{ uri: post?.images[0] }} />
 
-            <View className='flex flex-row justify-between items-center'>
+            <View className='flex flex-row justify-between items-center px-2'>
                     <PostLikeButton post={post}/>
 
-                <TouchableOpacity onPress={() => setShowComments(!showComments)} className='flex flex-[1] w-full justify-center flex-row items-center'>
+                <TouchableOpacity onPress={() => setShowComments(!showComments)} className='flex flex-[1] w-full justify-end flex-row items-center'>
                     <MessageCircle width={22} height={22} strokeWidth={1.5} className='text-gray-500' />
                     <Text className='text-gray-500 text-xs'>Comment</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity className='flex flex-[1] w-full justify-end flex-row items-center'>
-                    <Share width={22} height={22} strokeWidth={1.5} className='text-gray-500' />
-                    <Text className='text-gray-500 text-xs'>Share</Text>
                 </TouchableOpacity>
             </View>
 
