@@ -1,5 +1,6 @@
 import CustomButton from '@/components/CustomButton'
 import FormField from '@/components/FormField'
+import FormButton from '@/components/ui/FormButton'
 import { images } from '@/constants'
 import { API_HEAD } from '@/utils/utils'
 import axios from 'axios'
@@ -13,7 +14,7 @@ import Toast from 'react-native-toast-message'
 const SignUp = () => {
 
   const [form, setForm] = useState({
-    name : '',
+    name: '',
     userName: '',
     email: '',
     password: ''
@@ -22,45 +23,52 @@ const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const submit = async () => {
-    if(!form.name || !form.userName || !form.email || !form.password){
+
+    if (!form.name || !form.userName || !form.email || !form.password) {
       Toast.show({
-        type : 'error',
-        text1 : 'Please fill all fields'
+        type: 'error',
+        text1: 'Please fill all fields'
       })
       return
     }
-    console.log(form)
-    setIsSubmitting(true)
-    try{
+    try {
+      setIsSubmitting(true)
       const response = await axios.post(`${API_HEAD}/auth/signup`, form)
       console.log(response.data)
       Toast.show({
-        type : 'success',
-        text1 : 'Sign up successful'
+        type: 'success',
+        text1: 'Sign up successful'
       })
       setIsSubmitting(false)
       router.replace('/signin')
     }
-    catch(error : any){
+    catch (error: any) {
       setIsSubmitting(false)
       Toast.show({
-        type : 'error',
-        text1 : 'Sign up failed',
-        text2 : error?.response?.data?.error,
-        visibilityTime : 2000
+        type: 'error',
+        text1: 'Sign up failed',
+        text2: error?.response?.data?.error,
+        visibilityTime: 2000
       })
       console.log(error)
     }
   }
 
   return (
-    <SafeAreaView className='bg-primary h-full justify-center'>
+    <SafeAreaView className='bg-white text-primary h-full justify-center'>
       <ScrollView>
         <View
-          className='w-full justify-center items-center h-full min-h-[83vh] px-8 my-6'
+          className='w-full justify-start items-center h-full px-8 my-8'
         >
-          <Text className='text-xl font-psemibold'>Sign Up</Text>
-          <Image source={images.logo} style={{ resizeMode: 'contain' }} className='w-44 h-10 my-2' />
+          <View className='w-full flex flex-row items-center justify-center'>
+            <View>
+              <Image source={images.logoSmall} style={{ resizeMode: 'contain' }} className='w-16 h-12 my-2' />
+            </View>
+            <View className='px-2'>
+            <Text className='text-lg'>/ Sign Up</Text>
+            </View>
+          </View>
+
           <FormField
             title="Name"
             value={form.name}
@@ -87,12 +95,8 @@ const SignUp = () => {
             otherStyles="mt-2"
           />
 
-          <TouchableOpacity activeOpacity={0.8} onPress={submit} className="h-12 mt-6 bg-blue-500 rounded-lg w-full px-10 flex flex-row items-center justify-center">
-            <View className="flex flex-row items-center gap-2">
-              <Text className="text-center text-white font-medium text-base">Sign Up</Text>
-              <ArrowRight size={20} className="text-white" />
-            </View>
-          </TouchableOpacity>
+          <FormButton title="Sign Up" isLoadingMessage='Signing Up' handlePress={submit} containerStyles="mt-6 h-12" isLoading={isSubmitting} />
+
 
           <View className=' justify-center pt-5 flex-row gap-2'>
             <Text className='text-base'>Have an account already?</Text>

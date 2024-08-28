@@ -66,10 +66,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
+      // remove the data from the secure store
+      await SecureStore.deleteItemAsync(ACCESS_TOKEN);
+      await SecureStore.deleteItemAsync(REFRESH_TOKEN);
+      await SecureStore.deleteItemAsync('user');
+
       const response = await axios.post(`${API_HEAD}/auth/login`, { email, password });
       const { user, accessToken, refreshToken } = response?.data?.data;
       setAuthState({ accessToken, refreshToken, authenticated: true, user });
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      axios.defaults.baseURL = API_HEAD;
       await SecureStore.setItemAsync(ACCESS_TOKEN, accessToken);
       await SecureStore.setItemAsync(REFRESH_TOKEN, refreshToken);
       await SecureStore.setItemAsync('user', JSON.stringify(user));
@@ -81,8 +87,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     } catch (error: any) {
       Toast.show({
         type: 'error',
-        text1: 'Login Failed',
-        text2: error?.response?.data?.message || 'Something went wrong',
+        text1: error?.response?.data?.message || 'Something went wrong',
         visibilityTime: 2000,
       });
     } finally {

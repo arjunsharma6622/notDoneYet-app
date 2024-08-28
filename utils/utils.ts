@@ -1,4 +1,4 @@
-export const API_HEAD = process.env.NODE_ENV === "development" ? "http://192.168.0.100:8000" : "https://api.notdoneyet.in"
+export const API_HEAD = process.env.NODE_ENV === "development" ? "http://192.168.0.108:8000" : "https://api.notdoneyet.in"
 export const timeAgo = (dateString: string): string => {
   const inputDate = new Date(dateString);
   const now = new Date();

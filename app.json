@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "NDY_App",
+    "name": "Not Done Yet",
     "slug": "ndy",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -16,8 +16,8 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.notdoneyet.ndy",
-      "versionCode": 2
+      "package": "in.notdoneyet.app",
+      "versionCode": 3
     },
     "plugins": [
       "expo-router"

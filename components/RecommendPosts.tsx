@@ -1,9 +1,9 @@
-import { API_HEAD, userData } from '@/utils/utils'
+import { useAuth } from '@/context/AuthContext'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { RefreshControl, ScrollView, View } from 'react-native'
 import PostCard from './PostCard'
-import { useAuth } from '@/context/AuthContext'
+import PostCardSkeleton from './skeletons/PostCard/PostCardSkeleton'
 
 const RecommendPosts = () => {
     const [posts, setPosts] = useState([])
@@ -18,7 +18,7 @@ const RecommendPosts = () => {
         }
         catch (error) {
             console.error('Error fetching posts:', error)
-        }finally {
+        } finally {
             setIsFetching(false)
         }
     }
@@ -35,9 +35,15 @@ const RecommendPosts = () => {
                     <RefreshControl refreshing={isFetching} onRefresh={fetchPosts} />
                 }
                 showsVerticalScrollIndicator={false}>
-                {posts?.map((post: any) => (
-                    <PostCard post={post} key={post._id} />
-                ))}
+                {isFetching ?
+                    [...new Array(3)].map((_, index) => (
+                        <PostCardSkeleton colorMode='light' key={index} />
+                    ))
+                    : posts?.length > 0 &&
+                    posts?.map((post: any) => (
+                        <PostCard post={post} key={post._id} />
+                    ))
+                }
             </ScrollView>
         </View>
     )

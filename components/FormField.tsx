@@ -7,10 +7,10 @@ const FormField = ({ title, value, placeholder, handleChange, keyboardType, othe
 
   return (
     <View className={`space-y-1 ${otherStyles}`}>
-      <Text className='text-base text-primary font-medium'>{title}</Text>
-      <View className='relative w-full h-12 px-4 bg-gray-200 border border-gray-300 rounded-lg focus:border-gray-200 items-center flex-row'>
+      <Text className='text-base text-primary'>{title}</Text>
+      <View className='relative w-full h-12 px-4 border border-gray-300 rounded-lg focus:border-blue-500 items-center flex-row'>
         <TextInput
-          className='flex-1'
+          className='flex-1 h-12 text-base'
           value={value}
           placeholder={placeholder}
           placeholderTextColor="#7b7b8b"
@@ -22,8 +22,8 @@ const FormField = ({ title, value, placeholder, handleChange, keyboardType, othe
         />
         {title === "Password" && (
           <TouchableOpacity className='p-2' onPress={() => setShowPassword(!showPassword)}>
-            {!showPassword ? <Eye className='w-6 h-6 text-gray-500' /> :
-              <EyeOff className='w-6 h-6 text-gray-500' />
+            {!showPassword ? <Eye strokeWidth={1.4} size={30} className='text-gray-400' /> :
+              <EyeOff strokeWidth={1.4} size={30} className='w-6 h-6 text-gray-400' />
             }
           </TouchableOpacity>
         )}

@@ -1,49 +1,53 @@
 import FormField from '@/components/FormField'
+import FormButton from '@/components/ui/FormButton'
 import { images } from '@/constants'
 import { useAuth } from '@/context/AuthContext'
 import { Link } from 'expo-router'
-import { ArrowRight } from 'lucide-react-native'
 import React, { useState } from 'react'
-import { ActivityIndicator, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
-
 
 
 const SignIn = () => {
 
   const [form, setForm] = useState<
     { email: string; password: string }>({
-    email: '',
-    password: ''
-  })
+      email: '',
+      password: ''
+    })
 
-  const {onLogin} = useAuth()
-
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { onLogin, isLoading } = useAuth()
 
   const submit = async () => {
-    if(!form.email || !form.password){
+    if (!form.email || !form.password) {
       Toast.show({
-        type : 'error',
-        text1 : 'Please fill all fields'
+        type: 'error',
+        text1: 'Please fill all fields'
       })
       return
-    }try{
-    onLogin!(form?.email, form?.password)
-    }catch(error){
+    }
+    try {
+      onLogin!(form?.email, form?.password)
+    } catch (error) {
       console.log(error)
     }
   }
 
   return (
-    <SafeAreaView className=' text-primary h-full justify-center'>
+    <SafeAreaView className='bg-white text-primary h-full justify-center'>
       <ScrollView>
         <View
-          className='w-full justify-center items-center h-full min-h-[83vh] px-8 my-6'
+          className='w-full justify-start items-center h-full px-8 my-8'
         >
-          <Text className='text-xl font-psemibold'>Login</Text>
-          <Image source={images.logo} style={{ resizeMode: 'contain' }} className='w-44 h-10 my-2' />
+          <View className='w-full flex flex-row items-center justify-center'>
+            <View>
+              <Image source={images.logoSmall} style={{ resizeMode: 'contain' }} className='w-16 h-12 my-2' />
+            </View>
+            <View className='px-2'>
+            <Text className='text-lg'>/ Login</Text>
+            </View>
+          </View>
           <FormField
             title="Email"
             value={form.email}
@@ -58,15 +62,7 @@ const SignIn = () => {
             otherStyles="mt-2"
           />
 
-
-          <TouchableOpacity disabled={isSubmitting} activeOpacity={0.8} onPress={submit} className="h-12 mt-6 bg-blue-500 rounded-lg w-full px-10 flex flex-row items-center justify-center">
-            <View className="flex flex-row items-center gap-2">
-              <Text className="text-center text-white font-medium text-base">Login</Text>
-              {!isSubmitting ? <ArrowRight size={20} className="text-white" /> :
-              <ActivityIndicator color={"white"} size={20} />}
-            </View>
-          </TouchableOpacity>
-
+          <FormButton title="Login" isLoadingMessage='Logging in' handlePress={submit} containerStyles="mt-6 h-12" isLoading={isLoading} />
 
           <View className=' justify-center pt-5 flex-row gap-2'>
             <Text className='text-base'>Dont have an account?</Text>
